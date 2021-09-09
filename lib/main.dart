@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:placer/presentation/create_place/create_place_route.dart';
 import 'package:placer/presentation/places/places_route.dart';
 import 'package:placer/provider/places_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +19,16 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Placer',
         theme: ThemeData(
+          appBarTheme: Theme.of(context).appBarTheme.copyWith(brightness: Brightness.dark),
           scaffoldBackgroundColor: Color.fromRGBO(230, 230, 230, 1),
           primaryColor: Colors.indigo,
           accentColor: Colors.purple,
+          primarySwatch: Colors.purple
         ),
         home: PlacesRoute(),
+        routes: {
+          CreatePlaceRoute.ROUTE: (builderContext) => CreatePlaceRoute(),
+        },
       ),
     );
   }
