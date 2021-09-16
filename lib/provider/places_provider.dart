@@ -29,4 +29,17 @@ class PlacesProvider with ChangeNotifier {
       },
     );
   }
+
+  Future<void> fetchPlaces() async {
+    final data = await DbHelper.getAll('places');
+    _items = data
+        .map((dbItem) => Place(
+              id: dbItem['id'] as String,
+              title: dbItem['title'] as String,
+              location: PlaceLocation(latitude: 0.0, longitude: 0.0),
+              image: File(dbItem['image'] as String),
+            ))
+        .toList();
+    notifyListeners();
+  }
 }

@@ -18,25 +18,28 @@ class PlacesRoute extends StatelessWidget {
           ),
         ],
       ),
-      body: Consumer<PlacesProvider>(
-        child: Center(child: const Text('No places yet, start adding some!')),
-        builder: (builderContext, provider, child) => provider.items.isEmpty
-            ? child!
-            : ListView.builder(
-                itemCount: provider.items.length,
-                itemBuilder: (itemBuilderContext, index) {
-                  final item = provider.items[index];
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: FileImage(item.image),
-                    ),
-                    title: Text(item.title),
-                    onTap: () {
-                      // Go to detail page
-                    },
-                  );
-                },
-              ),
+      body: FutureBuilder(
+        future: context.read<PlacesProvider>().fetchPlaces(),
+        builder: (builderContext, snapshot) => Consumer<PlacesProvider>(
+          child: Center(child: const Text('No places yet, start adding some!')),
+          builder: (builderContext, provider, child) => provider.items.isEmpty
+              ? child!
+              : ListView.builder(
+                  itemCount: provider.items.length,
+                  itemBuilder: (itemBuilderContext, index) {
+                    final item = provider.items[index];
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: FileImage(item.image),
+                      ),
+                      title: Text(item.title),
+                      onTap: () {
+                        // Go to detail page
+                      },
+                    );
+                  },
+                ),
+        ),
       ),
     );
   }
