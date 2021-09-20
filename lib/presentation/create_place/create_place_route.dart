@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:placer/presentation/widget/image_input.dart';
+import 'package:placer/presentation/widget/location_input.dart';
 import 'package:placer/provider/places_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -54,9 +55,9 @@ class _CreatePlaceRouteState extends State<CreatePlaceRoute> {
                       decoration: InputDecoration(labelText: 'Title'),
                     ),
                     SizedBox(height: 16),
-                    ImageInputWidget(
-                      selectImageFunc: _selectImage,
-                    ),
+                    ImageInputWidget(selectImageFunc: _selectImage),
+                    SizedBox(height: 16),
+                    LocationInputWidget(),
                   ],
                 ),
               ),

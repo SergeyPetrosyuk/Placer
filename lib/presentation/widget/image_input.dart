@@ -48,7 +48,7 @@ class _ImageInputWidgetState extends State<ImageInputWidget> {
             height: 65,
             decoration: BoxDecoration(
               border: Border.all(color: Colors.black45, width: 2),
-              borderRadius: BorderRadius.circular(32.5),
+              borderRadius: BorderRadius.circular(16),
             ),
             alignment: Alignment.center,
             child: _imagePreview,
