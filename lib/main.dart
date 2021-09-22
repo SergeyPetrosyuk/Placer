@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:placer/presentation/create_place/create_place_route.dart';
+import 'package:placer/presentation/place_details/place_detail_route.dart';
 import 'package:placer/presentation/places/places_route.dart';
 import 'package:placer/provider/places_provider.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         home: PlacesRoute(),
         routes: {
           CreatePlaceRoute.ROUTE: (builderContext) => CreatePlaceRoute(),
+          PlaceDetailRoute.ROUTE: (builderContext) => PlaceDetailRoute()
         },
       ),
     );

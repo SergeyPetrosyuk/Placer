@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:placer/presentation/create_place/create_place_route.dart';
+import 'package:placer/presentation/place_details/place_detail_route.dart';
 import 'package:placer/provider/places_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +34,12 @@ class PlacesRoute extends StatelessWidget {
                         backgroundImage: FileImage(item.image),
                       ),
                       title: Text(item.title),
+                      subtitle: Text(item.location.address),
                       onTap: () {
-                        // Go to detail page
+                        Navigator.of(context).pushNamed(
+                          PlaceDetailRoute.ROUTE,
+                          arguments: item.id,
+                        );
                       },
                     );
                   },

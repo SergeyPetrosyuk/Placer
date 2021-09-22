@@ -73,7 +73,7 @@ class _ImageInputWidgetState extends State<ImageInputWidget> {
             style: TextStyle(fontSize: 10),
           )
         : ClipRRect(
-            borderRadius: BorderRadius.circular(32.5),
+            borderRadius: BorderRadius.circular(14.75),
             child: Image.file(
               image,
               fit: BoxFit.cover,

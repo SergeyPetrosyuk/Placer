@@ -1,12 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
+import 'package:placer/location/location_helper.dart';
+import 'package:placer/presentation/map/map_route.dart';
 
 class LocationInputWidget extends StatefulWidget {
+  final Function(double lat, double lng) selectPlace;
+
+  const LocationInputWidget({required this.selectPlace});
+
   @override
   _LocationInputWidgetState createState() => _LocationInputWidgetState();
 }
 
 class _LocationInputWidgetState extends State<LocationInputWidget> {
   String? _locationPreviewUrl;
+
+  Future<void> _getCurrentUserLocation() async {
+    final location = await Location().getLocation();
+    final latitude = location.latitude;
+    final longitude = location.longitude;
+
+    if (latitude == null || longitude == null) return;
+
+    final locationPreviewUrl = LocationHelper.generateLocationPreview(
+      latitude: latitude,
+      longitude: longitude,
+    );
+
+    setState(() {
+      _locationPreviewUrl = locationPreviewUrl.toString();
+    });
+
+    widget.selectPlace(latitude, longitude);
+  }
+
+  Future<void> _selectOnMap() async {
+    final LatLng? selectedLocation =
+        await Navigator.of(context).push<LatLng>(MaterialPageRoute(
+      builder: (builderContext) => MapRoute(
+        isSelecting: true,
+      ),
+    ));
+
+    if (selectedLocation == null) return;
+
+    final locationPreviewUrl = LocationHelper.generateLocationPreview(
+      latitude: selectedLocation.latitude,
+      longitude: selectedLocation.longitude,
+    );
+
+    setState(() {
+      _locationPreviewUrl = locationPreviewUrl.toString();
+    });
+
+    widget.selectPlace(selectedLocation.latitude, selectedLocation.longitude);
+  }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -25,7 +74,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: _getCurrentUserLocation,
                   icon: Icon(Icons.location_on_rounded),
                   label: Text('Current Location'),
                 ),
@@ -33,7 +82,7 @@ class _LocationInputWidgetState extends State<LocationInputWidget> {
               SizedBox(width: 16),
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: _selectOnMap,
                   icon: Icon(Icons.map_rounded),
                   label: Text('Select on Map'),
                 ),

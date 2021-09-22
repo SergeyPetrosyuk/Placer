@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:placer/model/place_model.dart';
 import 'package:placer/presentation/widget/image_input.dart';
 import 'package:placer/presentation/widget/location_input.dart';
 import 'package:placer/provider/places_provider.dart';
@@ -16,6 +17,7 @@ class CreatePlaceRoute extends StatefulWidget {
 class _CreatePlaceRouteState extends State<CreatePlaceRoute> {
   final _titleController = TextEditingController();
   File? _pickedImageFile;
+  PlaceLocation? _placeLocation;
 
   void _selectImage(File file) {
     print(file.path);
@@ -24,17 +26,22 @@ class _CreatePlaceRouteState extends State<CreatePlaceRoute> {
     });
   }
 
+  void _selectPlace(double latitude, double longitude) {
+    _placeLocation = PlaceLocation(latitude: latitude, longitude: longitude);
+  }
+
   void _savePlace() {
     final title = _titleController.text;
     final pickedImage = _pickedImageFile;
+    final location = _placeLocation;
 
-    if (title.isEmpty || pickedImage == null) {
+    if (title.isEmpty || pickedImage == null || location == null) {
       print('Incorrect input');
       return;
     }
 
     final PlacesProvider placesProvider = context.read<PlacesProvider>();
-    placesProvider.addPlace(title, pickedImage);
+    placesProvider.addPlace(title, pickedImage, location);
     Navigator.of(context).pop();
   }
 
@@ -50,15 +57,15 @@ class _CreatePlaceRouteState extends State<CreatePlaceRoute> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    TextField(
-                      controller: _titleController,
-                      decoration: InputDecoration(labelText: 'Title'),
-                    ),
-                    SizedBox(height: 16),
-                    ImageInputWidget(selectImageFunc: _selectImage),
-                    SizedBox(height: 16),
-                    LocationInputWidget(),
-                  ],
+                      TextField(
+                        controller: _titleController,
+                        decoration: InputDecoration(labelText: 'Title'),
+                      ),
+                      SizedBox(height: 16),
+                      ImageInputWidget(selectImageFunc: _selectImage),
+                      SizedBox(height: 16),
+                      LocationInputWidget(selectPlace: _selectPlace),
+                    ],
                 ),
               ),
             ),
